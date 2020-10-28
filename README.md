@@ -8,3 +8,5 @@ View Golf course info in a scrollable view
 - allows refetching
 - access course images using the transform functionality
 - access collection of courses or individual based on entryId
+
+![](ezgif.com-gif-maker.gif)
