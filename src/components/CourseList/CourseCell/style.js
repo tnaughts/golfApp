@@ -12,29 +12,36 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderTopWidth: 1,
   },
 
   infoContainer: {
     flexDirection: 'column',
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.2)',
   },
 
   title: {
-    ...fonts.styles.bodyMedium,
+    ...fonts.styles.h3Medium,
     paddingBottom: 10,
     paddingRight: 10,
-    flex: 1,
+
+    color: 'white',
   },
 
-  author: {
-    ...fonts.styles.smallregular,
-    paddingBottom: 10,
-    flex: 1,
+  infoText: {
+    ...fonts.styles.smallMedium,
+    paddingBottom: 5,
+    color: 'white',
+  },
+
+  subInfo: {
+    paddingLeft: 10,
   },
 
   image: {
-    height: 75,
-    width: 75,
+    flex: 1,
+    justifyContent: 'center',
+    borderRadius: 0.25,
+    height: 200,
   },
 });

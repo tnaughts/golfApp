@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import {get} from 'lodash';
 import style from './style';
@@ -20,24 +21,44 @@ const COURSES = gql`
       items {
         title
         info
+        par
+        holes
+        public
         sys {
           id
+        }
+        courseImage {
+          url(
+            transform: {
+              width: 500
+              height: 400
+              resizeStrategy: SCALE
+              quality: 100
+            }
+          )
         }
       }
     }
   }
 `;
 export const CourseList = ({navigation}) => {
-  const {loading, error, data} = useQuery(COURSES);
+  const {loading, error, data, refetch} = useQuery(COURSES);
+
+  if (error) {
+    if (error.graphQLErrors) {
+      error.graphQLErrors.map(({message, locations, path}) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
+      );
+    }
+    if (error.networkError) {
+      console.log(`[Network error]: ${error.networkError}`);
+    }
+  }
+
   if (!data && loading) {
     return <ActivityIndicator style={style.actionContainer} />;
-  }
-  if (!data) {
-    return (
-      <View>
-        <Text>NOPE</Text>
-      </View>
-    );
   }
 
   if (data && data.courseCollection && data.courseCollection.items) {
@@ -47,6 +68,8 @@ export const CourseList = ({navigation}) => {
           data={data.courseCollection.items}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${index}`}
+          onRefresh={() => refetch()}
+          refreshing={loading}
         />
       </View>
     );
@@ -57,7 +80,6 @@ export const CourseList = ({navigation}) => {
       <CourseCell
         course={course}
         handleClick={() => {
-          console.log('HELLO');
           navigation.navigate('Course', {
             courseId: course.sys.id,
             name: course.title,
@@ -68,8 +90,13 @@ export const CourseList = ({navigation}) => {
   }
 
   return (
-    <View>
-      <Text>NOPEL</Text>
-    </View>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={loading} onRefresh={refetch} />
+      }>
+      <Text>
+        Unable to fetch course information, please try again or contact support
+      </Text>
+    </ScrollView>
   );
 };

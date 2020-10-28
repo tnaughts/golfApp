@@ -28,7 +28,14 @@ export default StyleSheet.create({
   },
 
   image: {
-    height: 75,
-    width: 75,
+    flex: 1,
+    height: 300,
+    borderRadius: 20,
+  },
+
+  actionContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
